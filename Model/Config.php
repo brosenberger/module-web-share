@@ -80,6 +80,14 @@ class Config
     }
 
     /**
+     * The share text template; {{title}} is replaced by the shared page's title.
+     */
+    public function getShareText(): string
+    {
+        return trim((string) $this->scopeConfig->getValue(self::PATH . 'share_text', ScopeInterface::SCOPE_STORE));
+    }
+
+    /**
      * @return array<string, mixed> rows keyed by code, as stored by the dynamic-rows field
      */
     public function getProviders(): array

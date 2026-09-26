@@ -30,6 +30,8 @@ usual.
 - **Shares the right URL.** Products and categories share their own URL — not the address
   bar, so no tracking parameters and no layered-navigation filters or sorting. The CMS
   widget shares the page it is placed on, without the query string.
+- **Configurable per store view.** The share text and every share link can be switched,
+  edited and translated per store view, from the admin or at deploy time.
 - **Native first, links second.** A tap opens the device's share sheet. If the browser has
   none, or sharing fails, the fallback panel opens. If the customer simply closes the share
   sheet, nothing else happens.
@@ -42,7 +44,8 @@ usual.
 
 ## Configuration
 
-*Stores > Configuration > Catalog > Catalog > Web Share* (store view scope):
+*Stores > Configuration > Catalog > Catalog > Web Share*. Every setting can differ per
+website and store view — untick *Use Default* on the store view to override it there.
 
 | Setting | Default |
 |---|---|
@@ -51,20 +54,79 @@ usual.
 | Show on Category Pages | Yes |
 | Show on Product Lists | Yes (one icon per product tile) |
 | Offer "Copy Link" in the Fallback | Yes (shown only where the Clipboard API is available) |
-| Fallback Share Links | WhatsApp, Facebook, X, Pinterest, Email |
+| Share Text | `{{title}}` |
+| Fallback Share Links | WhatsApp, Facebook, X, LinkedIn, Pinterest, Email |
 
-Each fallback link is a label and a URL template with these placeholders, URL-encoded on
-output:
+### Share text
+
+A sentence sent along with the link, for example `Found this at our shop: {{title}}` — set
+it per store view to translate it. `{{title}}` becomes the product, category or page title.
+The native share sheet receives it as its text, and the share links can use it as
+`{{text}}`. Facebook and LinkedIn ignore both: they only take the URL and build the preview
+from the page's Open Graph tags (Luma's product pages have them; stock category and CMS
+pages do not, so their previews are thinner).
+
+### Share links
+
+Each row has a **Label**, a **URL Template** and an **Active** switch. Set *Active* to *No*
+to hide a network without losing its template; delete a row to remove it for good. Rows
+appear in the order they are listed. The placeholders are URL-encoded on output:
 
 | Placeholder | Product page / tile | Category | CMS widget |
 |---|---|---|---|
 | `{{url}}` | product URL | category URL | page URL without query string |
 | `{{title}}` | product name | category name | page title |
+| `{{text}}` | the share text | the share text | the share text |
 | `{{image}}` | main image (on tiles: the grid image already generated for the tile) | category image, if set | empty |
 
-Add, remove and reorder rows freely. **Only `https:`, `http:` and `mailto:` templates are
-rendered** — the templates end up in `href` attributes, so anything else (`javascript:`,
-`data:`, relative paths) is dropped instead of output.
+**Only `https:`, `http:` and `mailto:` templates are rendered** — the templates end up in
+`href` attributes, so anything else (`javascript:`, `data:`, relative paths) is dropped
+instead of output.
+
+The defaults, and how sure each one is:
+
+| Network | Template | Source |
+|---|---|---|
+| WhatsApp | `https://wa.me/?text={{text}}%20{{url}}` | WhatsApp click-to-chat (`wa.me`, `text` parameter) |
+| Facebook | `https://www.facebook.com/sharer/sharer.php?u={{url}}` | Not in Meta's current docs (they document the Share Dialog, which needs an app ID); long-standing and working. Only the URL is used. |
+| X | `https://x.com/intent/tweet?text={{text}}&url={{url}}` | [X web intent docs](https://docs.x.com/x-for-websites/post-button/guides/web-intent) |
+| LinkedIn | `https://www.linkedin.com/sharing/share-offsite/?url={{url}}` | Not documented (LinkedIn documents a JavaScript plugin only); the de facto standard link. Only the URL is used. |
+| Pinterest | `https://www.pinterest.com/pin/create/button/?url={{url}}&media={{image}}&description={{text}}` | [Pinterest save button docs](https://developers.pinterest.com/docs/web-features/buttons/) |
+| Email | `mailto:?subject={{title}}&body={{text}}%0A%0A{{url}}` | `mailto:` (RFC 6068) |
+
+All six were checked in a browser on 2026-09-26: each keeps the product URL through its
+redirect or login page. Facebook, X and LinkedIn need a logged-in account to show the
+prefilled dialog.
+
+### Adding another network
+
+Add a row with the network's share URL and the placeholders. Telegram, for example, as
+[documented by Telegram](https://core.telegram.org/widgets/share):
+
+| Label | URL Template |
+|---|---|
+| Telegram | `https://t.me/share/url?url={{url}}&text={{text}}` |
+
+### Configuring it at deploy time
+
+Everything above is ordinary store configuration, so it can be set from the command line
+or pinned in `app/etc/config.php` / `env.php` like any other setting. The share links are
+stored as JSON:
+
+```bash
+bin/magento config:set catalog/web_share/providers \
+  '{"whatsapp":{"label":"WhatsApp","url_template":"https://wa.me/?text={{text}}%20{{url}}","active":"1"},"email":{"label":"Email","url_template":"mailto:?subject={{title}}&body={{text}}%0A%0A{{url}}","active":"1"}}'
+
+bin/magento config:set --scope=stores --scope-code=de catalog/web_share/share_text \
+  'Bei uns gefunden: {{title}}'
+```
+
+Add `--lock-config` to write the value to `app/etc/config.php` (shared across environments)
+or `--lock-env` for `app/etc/env.php`; a locked value is shown read-only in the admin.
+
+When `app/etc/config.php` changes any other way — a deploy, a `git pull`, a file copied
+back — run `bin/magento app:config:import` (`setup:upgrade` does it too). Until then Magento
+answers every storefront request with *The configuration file has changed*.
 
 For CMS pages and blocks, insert the widget **Web Share Button**.
 

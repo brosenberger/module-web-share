@@ -40,19 +40,20 @@ class ShareLinkBuilder
     private const ALLOWED_SCHEME = '/^(https?:\/\/|mailto:)/i';
 
     /**
-     * @param array<string, mixed> $providers rows keyed by code: ['label' => ..., 'url_template' => ...]
+     * @param array<string, mixed> $providers rows keyed by code: ['label', 'url_template', 'active']
+     * @param array{url: string, title: string, text: string, image: string} $shareData
      * @return list<array{code: string, label: string, href: string}>
      */
-    public function build(array $providers, string $url, string $title, string $image): array
+    public function build(array $providers, array $shareData): array
     {
-        $replacements = [
-            '{{url}}' => rawurlencode($url),
-            '{{title}}' => rawurlencode($title),
-            '{{image}}' => rawurlencode($image),
-        ];
+        $replacements = [];
+        foreach (['url', 'title', 'text', 'image'] as $key) {
+            $replacements['{{' . $key . '}}'] = rawurlencode((string) ($shareData[$key] ?? ''));
+        }
         $links = [];
         foreach ($providers as $code => $row) {
-            if (!is_array($row)) {
+            // Rows saved before the Active switch existed have no 'active' key and stay on.
+            if (!is_array($row) || (string) ($row['active'] ?? '1') === '0') {
                 continue;
             }
             $label = trim((string) ($row['label'] ?? ''));

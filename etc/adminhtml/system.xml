@@ -32,9 +32,14 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends><field id="enabled">1</field></depends>
                 </field>
+                <field id="share_text" translate="label comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Share Text</label>
+                    <comment><![CDATA[Sent with the link, e.g. <code>Found this at our shop: {{title}}</code>. <code>{{title}}</code> is replaced by the product, category or page title. Used by the native share sheet and as <code>{{text}}</code> in the share links below. Facebook and LinkedIn only use the link itself and build their preview from the page's Open Graph tags.]]></comment>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
                 <field id="providers" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Fallback Share Links</label>
-                    <comment><![CDATA[Shown when the browser has no native share sheet, in this order. Placeholders: <code>{{url}}</code>, <code>{{title}}</code>, <code>{{image}}</code> (URL-encoded). Only <code>https:</code>, <code>http:</code> and <code>mailto:</code> links are rendered.]]></comment>
+                    <comment><![CDATA[Shown when the browser has no native share sheet, in this order. Placeholders: <code>{{url}}</code>, <code>{{title}}</code>, <code>{{text}}</code>, <code>{{image}}</code> (URL-encoded). Set <em>Active</em> to No to hide a link without deleting its template. Only <code>https:</code>, <code>http:</code> and <code>mailto:</code> links are rendered.]]></comment>
                     <frontend_model>BroCode\WebShare\Block\Adminhtml\Form\Field\Providers</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <depends><field id="enabled">1</field></depends>

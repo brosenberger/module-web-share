@@ -8,7 +8,7 @@
  */
 $data = $block->getShareData();
 $listId = 'brocode-web-share-' . substr(hash('sha256', 'listing' . $data['url']), 0, 10);
-$init = ['BroCode_WebShare/js/web-share' => ['url' => $data['url'], 'title' => $data['title']]];
+$init = ['BroCode_WebShare/js/web-share' => ['url' => $data['url'], 'title' => $data['title'], 'text' => $data['text']]];
 $label = __('Share %1', $data['title']);
 ?>
 <div class="brocode-web-share brocode-web-share--listing"

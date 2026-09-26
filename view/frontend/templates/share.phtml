@@ -6,7 +6,7 @@
 $data = $block->getShareData();
 $links = $block->getLinks();
 $listId = 'brocode-web-share-' . substr(hash('sha256', $block->getNameInLayout() . $data['url']), 0, 10);
-$init = ['BroCode_WebShare/js/web-share' => ['url' => $data['url'], 'title' => $data['title']]];
+$init = ['BroCode_WebShare/js/web-share' => ['url' => $data['url'], 'title' => $data['title'], 'text' => $data['text']]];
 ?>
 <div class="brocode-web-share"
      data-copied="<?= $escaper->escapeHtmlAttr(__('Link copied')) ?>"

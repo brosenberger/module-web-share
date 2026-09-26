@@ -30,17 +30,47 @@ declare(strict_types=1);
 namespace BroCode\WebShare\Block\Adminhtml\Form\Field;
 
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
+use Magento\Framework\DataObject;
 
 /**
- * Dynamic rows for the fallback share links: one label and one URL template per row.
+ * Dynamic rows for the fallback share links: label, URL template and an Active switch per row,
+ * so a network can be turned off without losing its template.
  */
 class Providers extends AbstractFieldArray
 {
+    /**
+     * @var ActiveSelect|null
+     */
+    private $activeRenderer;
+
     protected function _prepareToRender(): void
     {
         $this->addColumn('label', ['label' => __('Label'), 'class' => 'required-entry']);
         $this->addColumn('url_template', ['label' => __('URL Template'), 'class' => 'required-entry', 'style' => 'width:420px']);
+        $this->addColumn('active', ['label' => __('Active'), 'renderer' => $this->getActiveRenderer()]);
         $this->_addAfter = false;
         $this->_addButtonLabel = (string) __('Add Share Link');
+    }
+
+    protected function _prepareArrayRow(DataObject $row): void
+    {
+        // Rows saved before the Active column existed have no value and count as active.
+        $active = (string) ($row->getData('active') ?? '1');
+        $row->setData('option_extra_attrs', [
+            'option_' . $this->getActiveRenderer()->calcOptionHash($active) => 'selected="selected"',
+        ]);
+    }
+
+    private function getActiveRenderer(): ActiveSelect
+    {
+        if ($this->activeRenderer === null) {
+            $this->activeRenderer = $this->getLayout()->createBlock(
+                ActiveSelect::class,
+                '',
+                ['data' => ['is_render_to_js_template' => true]]
+            );
+        }
+
+        return $this->activeRenderer;
     }
 }

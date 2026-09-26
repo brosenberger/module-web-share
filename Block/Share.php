@@ -69,7 +69,7 @@ class Share extends Template
     protected $imageHelper;
 
     /**
-     * @var array{url: string, title: string, image: string}|null|false false = not resolved yet
+     * @var array{url: string, title: string, text: string, image: string}|null|false false = not resolved yet
      */
     protected $shareData = false;
 
@@ -94,12 +94,16 @@ class Share extends Template
     }
 
     /**
-     * @return array{url: string, title: string, image: string}|null
+     * @return array{url: string, title: string, text: string, image: string}|null
      */
     public function getShareData(): ?array
     {
         if ($this->shareData === false) {
-            $this->shareData = $this->resolveShareData();
+            $data = $this->resolveShareData();
+            if ($data !== null) {
+                $data['text'] = trim(strtr($this->config->getShareText(), ['{{title}}' => $data['title']]));
+            }
+            $this->shareData = $data;
         }
 
         return $this->shareData;
@@ -112,12 +116,7 @@ class Share extends Template
     {
         $data = $this->getShareData();
 
-        return $data === null ? [] : $this->linkBuilder->build(
-            $this->config->getProviders(),
-            $data['url'],
-            $data['title'],
-            $data['image']
-        );
+        return $data === null ? [] : $this->linkBuilder->build($this->config->getProviders(), $data);
     }
 
     public function isCopyLinkEnabled(): bool

@@ -75,4 +75,10 @@ class ConfigTest extends TestCase
 
         return new Config($scopeConfig, new Json());
     }
+
+    public function testShareTextIsTheStoredValueTrimmed(): void
+    {
+        self::assertSame('Look: {{title}}', $this->config(['catalog/web_share/share_text' => "  Look: {{title}} \n"])->getShareText());
+        self::assertSame('', $this->config([])->getShareText());
+    }
 }

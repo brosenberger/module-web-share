@@ -16,6 +16,9 @@ define([], function () {
         const copy = root.querySelector('.brocode-web-share-copy');
         const status = root.querySelector('.brocode-web-share-status');
         const payload = { url: config.url, title: config.title };
+        if (config.text) {
+            payload.text = config.text;
+        }
         const native = typeof navigator.share === 'function'
             && (typeof navigator.canShare !== 'function' || navigator.canShare(payload));
 
