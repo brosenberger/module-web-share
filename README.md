@@ -47,6 +47,8 @@ usual.
 *Stores > Configuration > Catalog > Catalog > Web Share*. Every setting can differ per
 website and store view — untick *Use Default* on the store view to override it there.
 
+![The Web Share settings: placement switches, share text, and the share-link rows with their Active column](docs/images/admin-configuration.png)
+
 | Setting | Default |
 |---|---|
 | Enabled | Yes |

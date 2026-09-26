@@ -45,8 +45,9 @@ class Providers extends AbstractFieldArray
 
     protected function _prepareToRender(): void
     {
-        $this->addColumn('label', ['label' => __('Label'), 'class' => 'required-entry']);
-        $this->addColumn('url_template', ['label' => __('URL Template'), 'class' => 'required-entry', 'style' => 'width:420px']);
+        // Explicit widths: without one the label input collapses next to the long template field.
+        $this->addColumn('label', ['label' => __('Label'), 'class' => 'required-entry', 'style' => 'width:110px']);
+        $this->addColumn('url_template', ['label' => __('URL Template'), 'class' => 'required-entry', 'style' => 'width:340px']);
         $this->addColumn('active', ['label' => __('Active'), 'renderer' => $this->getActiveRenderer()]);
         $this->_addAfter = false;
         $this->_addButtonLabel = (string) __('Add Share Link');

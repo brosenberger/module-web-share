@@ -2,7 +2,7 @@
     "name": "brocode/module-web-share",
     "description": "A \"Share\" button for Magento 2 product pages, category pages and CMS pages: the device's native share sheet via the Web Share API, with admin-configurable share links as a script-free fallback.",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "homepage": "https://github.com/brosenberger/module-web-share",
     "keywords": [
