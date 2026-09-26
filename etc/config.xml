@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <catalog>
+            <web_share>
+                <enabled>1</enabled>
+                <on_product>1</on_product>
+                <on_category>1</on_category>
+                <copy_link>1</copy_link>
+                <providers>{"whatsapp":{"label":"WhatsApp","url_template":"https://wa.me/?text={{title}}%20{{url}}"},"facebook":{"label":"Facebook","url_template":"https://www.facebook.com/sharer/sharer.php?u={{url}}"},"x":{"label":"X","url_template":"https://x.com/intent/post?text={{title}}&amp;url={{url}}"},"pinterest":{"label":"Pinterest","url_template":"https://www.pinterest.com/pin/create/button/?url={{url}}&amp;media={{image}}&amp;description={{title}}"},"email":{"label":"Email","url_template":"mailto:?subject={{title}}&amp;body={{url}}"}}</providers>
+            </web_share>
+        </catalog>
+    </default>
+</config>

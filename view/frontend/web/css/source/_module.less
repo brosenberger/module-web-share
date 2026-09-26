@@ -1,0 +1,102 @@
+// BroCode_WebShare
+// The Share control matches Luma's "Add to Wish List" / "Add to Compare" actions:
+// grey, semibold, uppercase, a 16px icon before the label. Library colours are used
+// instead of Luma's @addto-color so the file also compiles on Blank-based themes.
+@brocode-web-share__color: @color-gray40;
+@brocode-web-share__hover-color: @color-gray20;
+
+.brocode-web-share {
+    position: relative;
+    display: inline-block;
+    vertical-align: baseline;
+    margin: 0 0 1rem;
+    text-align: left;
+
+    .brocode-web-share-toggle,
+    .brocode-web-share-copy {
+        .lib-button-as-link();
+    }
+
+    .brocode-web-share-toggle {
+        font: inherit;
+        line-height: inherit;
+        display: inline-block; // like Luma's a.action
+        vertical-align: baseline; // lib-button-as-link() sets middle, which drops the text ~1px
+        color: @brocode-web-share__color;
+        font-weight: @font-weight__semibold;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+
+        svg {
+            width: 16px;
+            height: 16px;
+            margin: -2px 5px 0 0;
+            vertical-align: middle;
+        }
+
+        &:hover,
+        &:focus,
+        &[aria-expanded='true'] {
+            color: @brocode-web-share__hover-color;
+            text-decoration: none;
+        }
+    }
+
+    // Without JavaScript the links are a plain list under the button.
+    .brocode-web-share-links {
+        list-style: none;
+        margin: .75rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem 1.25rem;
+
+        > li {
+            margin: 0;
+        }
+    }
+
+    // With JavaScript they open as a small panel, so the page does not shift.
+    &.is-enhanced .brocode-web-share-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 20;
+        min-width: 180px;
+        margin-top: .5rem;
+        padding: 1rem 1.25rem;
+        flex-direction: column;
+        background: @color-white;
+        border: 1px solid @color-gray80;
+        box-shadow: 0 3px 3px rgba(0, 0, 0, .15);
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &.is-enhanced.is-flipped .brocode-web-share-links {
+        left: auto;
+        right: 0;
+    }
+
+    .brocode-web-share-copy {
+        font-weight: normal;
+        text-align: left;
+    }
+
+    // Last line of the panel; the list item is empty until a link was copied.
+    .brocode-web-share-status {
+        font-size: 1.2rem;
+
+        &:empty {
+            display: none;
+        }
+    }
+}
+
+// In the product page's wishlist/compare row: sit on the same line. The spacing comes from
+// Luma's own margin-right on the actions before it, so no margin of our own.
+.product-social-links .brocode-web-share {
+    margin: 0;
+}

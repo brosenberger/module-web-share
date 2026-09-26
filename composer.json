@@ -1,0 +1,50 @@
+{
+    "name": "brocode/module-web-share",
+    "description": "A \"Share\" button for Magento 2 product pages, category pages and CMS pages: the device's native share sheet via the Web Share API, with admin-configurable share links as a script-free fallback.",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "MIT",
+    "homepage": "https://github.com/brosenberger/module-web-share",
+    "keywords": [
+        "magento2",
+        "magento",
+        "web-share",
+        "web-share-api",
+        "social-share",
+        "share-buttons",
+        "product-page",
+        "brocode"
+    ],
+    "authors": [
+        {
+            "name": "Benjamin Rosenberger",
+            "email": "bensch.rosenberger@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/brosenberger/module-web-share/issues",
+        "source": "https://github.com/brosenberger/module-web-share"
+    },
+    "funding": [
+        {
+            "type": "buymeacoffee",
+            "url": "https://www.buymeacoffee.com/brosenberger"
+        }
+    ],
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0||~8.4.0",
+        "magento/framework": ">=103.0.0",
+        "magento/module-catalog": ">=104.0.0",
+        "magento/module-config": ">=101.2.0",
+        "magento/module-store": ">=101.0.0",
+        "magento/module-widget": ">=101.0.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "BroCode\\WebShare\\": ""
+        }
+    }
+}

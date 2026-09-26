@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget_file.xsd">
+    <widget id="brocode_web_share" class="BroCode\WebShare\Block\Widget\Share">
+        <label translate="true">Web Share Button</label>
+        <description translate="true">Share this page through the device's native share sheet, with share links as fallback.</description>
+    </widget>
+</widgets>
