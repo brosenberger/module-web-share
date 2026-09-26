@@ -21,6 +21,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends><field id="enabled">1</field></depends>
                 </field>
+                <field id="on_listing" translate="label comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show on Product Lists</label>
+                    <comment>A share icon on every product tile of category and search result pages, sharing that product's page.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
                 <field id="copy_link" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Offer "Copy Link" in the Fallback</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

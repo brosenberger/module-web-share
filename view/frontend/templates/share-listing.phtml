@@ -1,0 +1,48 @@
+<?php
+/**
+ * Icon-only share action on a product tile, next to Luma's wishlist and compare icons.
+ * The link panel is rendered hidden: without JavaScript a list under every tile would be noise.
+ *
+ * @var \BroCode\WebShare\Block\ListingShare $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$data = $block->getShareData();
+$listId = 'brocode-web-share-' . substr(hash('sha256', 'listing' . $data['url']), 0, 10);
+$init = ['BroCode_WebShare/js/web-share' => ['url' => $data['url'], 'title' => $data['title']]];
+$label = __('Share %1', $data['title']);
+?>
+<div class="brocode-web-share brocode-web-share--listing"
+     data-copied="<?= $escaper->escapeHtmlAttr(__('Link copied')) ?>"
+     data-mage-init='<?= $escaper->escapeHtmlAttr(json_encode($init)) ?>'>
+    <button type="button" class="brocode-web-share-toggle" hidden
+            title="<?= $escaper->escapeHtmlAttr(__('Share')) ?>"
+            aria-label="<?= $escaper->escapeHtmlAttr($label) ?>"
+            aria-expanded="false" aria-controls="<?= $escaper->escapeHtmlAttr($listId) ?>">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="3.5" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="12.5" r="2"/>
+                <path d="M5.8 7 10.2 4.5M5.8 9l4.4 2.5"/>
+            </g>
+        </svg><span><?= $escaper->escapeHtml(__('Share')) ?></span>
+    </button>
+    <ul class="brocode-web-share-links" id="<?= $escaper->escapeHtmlAttr($listId) ?>" hidden>
+        <?php foreach ($block->getLinks() as $link): ?>
+            <?php $isMail = stripos($link['href'], 'mailto:') === 0; ?>
+            <li>
+                <a href="<?= $escaper->escapeUrl($link['href']) ?>"
+                   data-share="<?= $escaper->escapeHtmlAttr($link['code']) ?>"
+                   <?php if (!$isMail): ?>target="_blank" rel="noopener noreferrer"<?php endif; ?>>
+                    <?= $escaper->escapeHtml($link['label']) ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+        <?php if ($block->isCopyLinkEnabled()): ?>
+            <li>
+                <button type="button" class="brocode-web-share-copy" data-share="copy" hidden>
+                    <span><?= $escaper->escapeHtml(__('Copy link')) ?></span>
+                </button>
+            </li>
+            <li class="brocode-web-share-status" role="status" aria-live="polite"></li>
+        <?php endif; ?>
+    </ul>
+</div>

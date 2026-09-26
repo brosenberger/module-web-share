@@ -66,12 +66,12 @@ class Share extends Template
     /**
      * @var ImageHelper
      */
-    private $imageHelper;
+    protected $imageHelper;
 
     /**
      * @var array{url: string, title: string, image: string}|null|false false = not resolved yet
      */
-    private $shareData = false;
+    protected $shareData = false;
 
     public function __construct(
         Context $context,
@@ -137,7 +137,7 @@ class Share extends Template
     /**
      * @return array{url: string, title: string, image: string}|null
      */
-    private function resolveShareData(): ?array
+    protected function resolveShareData(): ?array
     {
         switch ($this->getSource()) {
             case 'product':

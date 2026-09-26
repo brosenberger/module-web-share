@@ -61,6 +61,10 @@ class ConfigTest extends TestCase
         self::assertFalse($on->isEnabledFor('category'));
         self::assertTrue($on->isEnabledFor('page'));
         self::assertFalse($on->isEnabledFor('unknown'));
+
+        $lists = $this->config([], ['catalog/web_share/enabled' => true, 'catalog/web_share/on_listing' => true]);
+        self::assertTrue($lists->isEnabledFor('listing'));
+        self::assertFalse($on->isEnabledFor('listing'));
     }
 
     private function config(array $values, array $flags = []): Config

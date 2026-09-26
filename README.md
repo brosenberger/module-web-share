@@ -1,6 +1,6 @@
 # BroCode_WebShare
 
-A **Share** button for Magento 2 product pages, category pages and CMS pages. On phones,
+A **Share** button for Magento 2 product pages, category pages, product lists and CMS pages. On phones,
 tablets and most desktop browsers it opens the device's own share sheet (WhatsApp,
 Messages, AirDrop, Mail, …) through the browser's
 [Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API). Where the
@@ -24,6 +24,9 @@ usual.
 - **Looks like Luma's own actions.** The Share control sits in the product page's
   wishlist/compare row with the same grey, uppercase, icon-first styling, and on category
   pages below the description.
+- **On every product tile, too.** Category listings, quick search and advanced search get
+  a share icon next to the wishlist and compare icons of each tile, sharing that product's
+  page. The link panel is rendered hidden there, so a list under every tile never appears.
 - **Shares the right URL.** Products and categories share their own URL — not the address
   bar, so no tracking parameters and no layered-navigation filters or sorting. The CMS
   widget shares the page it is placed on, without the query string.
@@ -31,9 +34,11 @@ usual.
   none, or sharing fails, the fallback panel opens. If the customer simply closes the share
   sheet, nothing else happens.
 - **Works without JavaScript.** The share links are server-rendered; without JavaScript
-  they are shown as a plain list.
+  they are shown as a plain list on product and category pages.
 - **Accessible.** A real `<button>` with `aria-expanded`, Escape closes the panel and
   returns focus, and "Link copied" is announced through a live region.
+
+![The share icon next to wishlist and compare on product tiles, with the panel open on desktop and mobile](docs/images/share-product-list.png)
 
 ## Configuration
 
@@ -44,17 +49,18 @@ usual.
 | Enabled | Yes |
 | Show on Product Pages | Yes |
 | Show on Category Pages | Yes |
+| Show on Product Lists | Yes (one icon per product tile) |
 | Offer "Copy Link" in the Fallback | Yes (shown only where the Clipboard API is available) |
 | Fallback Share Links | WhatsApp, Facebook, X, Pinterest, Email |
 
 Each fallback link is a label and a URL template with these placeholders, URL-encoded on
 output:
 
-| Placeholder | Product | Category | CMS widget |
+| Placeholder | Product page / tile | Category | CMS widget |
 |---|---|---|---|
 | `{{url}}` | product URL | category URL | page URL without query string |
 | `{{title}}` | product name | category name | page title |
-| `{{image}}` | main product image | category image, if set | empty |
+| `{{image}}` | main image (on tiles: the grid image already generated for the tile) | category image, if set | empty |
 
 Add, remove and reorder rows freely. **Only `https:`, `http:` and `mailto:` templates are
 rendered** — the templates end up in `href` attributes, so anything else (`javascript:`,

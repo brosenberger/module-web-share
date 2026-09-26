@@ -54,6 +54,10 @@
         > li {
             margin: 0;
         }
+
+        &[hidden] {
+            display: none;
+        }
     }
 
     // With JavaScript they open as a small panel, so the page does not shift.
@@ -99,4 +103,32 @@
 // Luma's own margin-right on the actions before it, so no margin of our own.
 .product-social-links .brocode-web-share {
     margin: 0;
+}
+
+// On a product tile: an icon-only action like Luma's wishlist and compare icons (35px, text hidden).
+.product-item-actions .actions-secondary .brocode-web-share--listing {
+    margin: 0;
+    vertical-align: top; // lines the 35px box up with the wishlist and compare icons
+
+    .brocode-web-share-toggle {
+        width: 35px;
+        line-height: 35px;
+        text-align: center;
+        vertical-align: middle;
+
+        svg {
+            margin: -2px 0 0;
+        }
+
+        > span {
+            .lib-visually-hidden();
+        }
+    }
+
+    &.is-enhanced .brocode-web-share-links {
+        font-size: 1.4rem;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+    }
 }

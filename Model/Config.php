@@ -44,6 +44,7 @@ class Config
     private const PLACEMENT_FLAGS = [
         'product' => 'on_product',
         'category' => 'on_category',
+        'listing' => 'on_listing',
         'page' => null,
     ];
 

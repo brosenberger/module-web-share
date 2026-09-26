@@ -4,6 +4,7 @@
     <module name="BroCode_WebShare">
         <sequence>
             <module name="Magento_Catalog"/>
+            <module name="Magento_CatalogSearch"/>
             <module name="Magento_Widget"/>
         </sequence>
     </module>
