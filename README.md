@@ -7,6 +7,8 @@ Messages, AirDrop, Mail, …) through the browser's
 browser has no share sheet, it opens a small panel of share links instead, configured in
 the admin. No third-party scripts, no tracking pixels, no extra CSP entries.
 
+**Module page:** [brocode.at/modules/module-web-share/](https://brocode.at/modules/module-web-share/)
+
 ```bash
 composer require brocode/module-web-share
 bin/magento module:enable BroCode_WebShare
